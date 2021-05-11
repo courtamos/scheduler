@@ -21,7 +21,7 @@ export default function InterviewerListItem({ name, avatar, selected, setIntervi
           src={avatar}
           alt={name}
         />
-        {name}
+        {selected && name}
     </li>
   );
 }
