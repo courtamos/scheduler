@@ -39,8 +39,8 @@ export default function Form ({ name, interviewers, interviewer, onSave, onCance
         </form>
         <InterviewerList 
           interviewers={interviewers} 
-          interviewer={selectedInterviewer} 
-          setInterviewer={setSelectedInterviewer} 
+          value={selectedInterviewer} 
+          onChange={setSelectedInterviewer} 
         />
       </section>
       <section className="appointment__card-right">
