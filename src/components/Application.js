@@ -11,22 +11,25 @@ export default function Application() {
   const [state, setState] = useState({
     day: "Monday",
     days: [],
-    appointments: {}
+    appointments: {},
+    interviewers: {}
   })
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
   const setDay = day => setState({ ...state, day });
-  
+
   useEffect(() => {
     Promise.all([
       axios.get('/api/days'),
-      axios.get('/api/appointments')
+      axios.get('/api/appointments'),
+      axios.get('api/interviewers')
     ])
     .then(all => {
       setState(prev => ({ 
         ...prev, 
         days: all[0].data, 
-        appointments: all[1].data 
+        appointments: all[1].data ,
+        interviewers: all[2].data
       }))
     })
   }, [])
@@ -49,7 +52,9 @@ export default function Application() {
         {dailyAppointments.map(appointmentItem => (
           <Appointment 
             key={appointmentItem.id}
-            {...appointmentItem}
+            id={appointmentItem.id}
+            time={appointmentItem.time}
+            interview={appointmentItem.interview}
           />
         ))}
         <Appointment key="last" time="5pm" />
