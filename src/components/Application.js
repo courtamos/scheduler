@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import "components/Application.scss";
 import DayList from "components/DayList";
 import Appointment from "components/Appointment/index"
-import { getAppointmentsForDay } from "helpers/selectors.js";
+import { getAppointmentsForDay, getInterviewersForDay } from "helpers/selectors.js";
 
 const axios = require('axios');
 
@@ -16,6 +16,7 @@ export default function Application() {
   })
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
+  const dailyInerviewers = getInterviewersForDay(state, state.day);
   const setDay = day => setState({ ...state, day });
 
   useEffect(() => {
