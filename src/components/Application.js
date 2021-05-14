@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import "components/Application.scss";
 import DayList from "components/DayList";
 import Appointment from "components/Appointment/index"
-import { getAppointmentsForDay, getInterviewersForDay } from "helpers/selectors.js";
+import { getAppointmentsForDay, getInterviewersForDay, getInterview } from "helpers/selectors.js";
 
 const axios = require('axios');
 
@@ -16,8 +16,26 @@ export default function Application() {
   })
 
   const dailyAppointments = getAppointmentsForDay(state, state.day);
-  const dailyInerviewers = getInterviewersForDay(state, state.day);
+  const dailyInterviewers = getInterviewersForDay(state, state.day);
   const setDay = day => setState({ ...state, day });
+
+  const bookInterview = function(id, interview) {
+    console.log('bookInterview id:', id);
+    console.log('bookInterview interview: ', interview);
+
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    return axios.put(`/api/appointments/${id}`, appointment)
+      .then(setState({...state, appointments}))
+  }
 
   useEffect(() => {
     Promise.all([
@@ -50,14 +68,29 @@ export default function Application() {
         <img className="sidebar__lhl sidebar--centered" src="images/lhl.png" alt="Lighthouse Labs"/>
       </section>
       <section className="schedule">
-        {dailyAppointments.map(appointmentItem => (
+        {dailyAppointments.map((appointmentItem) => {
+          const dailyInterview = getInterview(state, appointmentItem.interview);
+          return (
+            <Appointment
+              key={appointmentItem.id}
+              id={appointmentItem.id}
+              time={appointmentItem.time}
+              interview={dailyInterview}
+              interviewers={dailyInterviewers}
+              bookInterview={bookInterview}
+            /> 
+          )
+        })}
+
+        {/* {dailyAppointments.map(appointmentItem => (
           <Appointment 
             key={appointmentItem.id}
             id={appointmentItem.id}
             time={appointmentItem.time}
             interview={appointmentItem.interview}
+            interviewers={dailyInterviewers}
           />
-        ))}
+        ))} */}
         <Appointment key="last" time="5pm" />
       </section>
     </main>
