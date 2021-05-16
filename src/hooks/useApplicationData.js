@@ -28,7 +28,8 @@ export default function useApplicationData() {
               ...state.appointments[action.payload.id],
               interview: action.payload.interview
             }
-          }
+          },
+          days: action.payload.days
         }
       }
       default:
@@ -89,20 +90,20 @@ export default function useApplicationData() {
       [id]: appointment
     };
 
-    const updatedDays = updateSpots(state.day, state.days, appointments);
-    console.log('CREATE updatedDays: ', updatedDays);
-  
+    
     return axios.put(`/api/appointments/${id}`, appointment)
-      .then(() => {
+    .then(() => {
+        const updatedDays = updateSpots(state.day, state.days, appointments);
         dispatch({
           type: SET_INTERVIEW,
           payload: {
             id,
-            interview
+            interview,
+            days: updatedDays
           }
         })
         // setState({...state, appointments, days: updatedDays})
-      })
+    })
   }
 
   // delete an interview
@@ -121,20 +122,20 @@ export default function useApplicationData() {
     return axios.delete(`/api/appointments/${id}`)
     .then(() => {
       const updatedDays = updateSpots(state.day, state.days, appointments);
-      console.log('CANCEL updatedDays: ', updatedDays);
 
       dispatch({
         type: SET_INTERVIEW,
         payload: {
           id,
-          interview: null
+          interview: null,
+          days: updatedDays
         }
       })
       // setState({...state, appointments, days: updatedDays}) 
-      })
+    })
   }
 
-  // calulate spots available for each day
+  // calculate spots available for each day
   const updateSpots = function(dayName, days, appointments) {
     const selectedDay = days.find(dayItem => dayItem.name === dayName);
     const selectedDayAppointments = selectedDay.appointments;
@@ -143,7 +144,6 @@ export default function useApplicationData() {
     for (const appointmentId of selectedDayAppointments) {
       const appointment = appointments[appointmentId];
   
-      console.log('app in update spots: ', appointment);
       if (!appointment.interview) {
         spots++;
       }
