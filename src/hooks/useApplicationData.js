@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const axios = require('axios');
 
@@ -41,6 +41,7 @@ export default function useApplicationData() {
     };
 
     const updatedDays = updateSpots(state.day, state.days, appointments);
+    console.log('CREATE updatedDays: ', updatedDays);
   
     return axios.put(`/api/appointments/${id}`, appointment)
       .then(() => {
@@ -60,11 +61,13 @@ export default function useApplicationData() {
       [id]: appointment
     };
 
-    const updatedDays = updateSpots(state.day, state.days, appointments);
-  
+    
     return axios.delete(`/api/appointments/${id}`)
-      .then(() => {
-        setState({...state, appointments, days: updatedDays}) 
+    .then(() => {
+      const updatedDays = updateSpots(state.day, state.days, appointments);
+      console.log('CANCEL updatedDays: ', updatedDays);
+
+      setState({...state, appointments, days: updatedDays}) 
       })
   }
 
@@ -74,10 +77,10 @@ export default function useApplicationData() {
     const selectedDayAppointments = selectedDay.appointments;
   
     let spots = 0;
-  
     for (const appointmentId of selectedDayAppointments) {
       const appointment = appointments[appointmentId];
   
+      console.log('app in update spots: ', appointment);
       if (!appointment.interview) {
         spots++;
       }
@@ -85,8 +88,13 @@ export default function useApplicationData() {
   
     let updatedDay = {...selectedDay, spots};
     
-    let updatedDays = [...days];
-    updatedDays[selectedDay] = updatedDay;
+    const updatedDays = days.map(day => {
+      if (day.name === dayName) {
+        return updatedDay;
+      }
+
+      return day
+    })
     
     return updatedDays;
   };
