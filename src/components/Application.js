@@ -21,9 +21,6 @@ export default function Application() {
 
   // create an interview
   const bookInterview = function(id, interview) {
-    console.log('bookInterview id:', id);
-    console.log('bookInterview interview: ', interview);
-
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -35,7 +32,9 @@ export default function Application() {
     };
 
     return axios.put(`/api/appointments/${id}`, appointment)
-      .then(setState({...state, appointments}))
+      .then(() => {
+        setState({...state, appointments})
+      })
   }
 
   // delete an interview
@@ -51,7 +50,9 @@ export default function Application() {
     };
 
     return axios.delete(`/api/appointments/${id}`)
-      .then(setState({...state, appointments}))
+      .then(() => {
+        setState({...state, appointments}) 
+      })
   }
 
   useEffect(() => {
