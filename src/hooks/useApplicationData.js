@@ -12,6 +12,22 @@ export default function useApplicationData() {
 
   const setDay = day => setState({ ...state, day });
 
+  useEffect(() => {
+    Promise.all([
+      axios.get('/api/days'),
+      axios.get('/api/appointments'),
+      axios.get('api/interviewers')
+    ])
+    .then(all => {
+      setState(prev => ({ 
+        ...prev, 
+        days: all[0].data, 
+        appointments: all[1].data ,
+        interviewers: all[2].data
+      }))
+    })
+  }, [])
+
   // create an interview
   const bookInterview = function(id, interview) {
     const appointment = {
@@ -47,22 +63,29 @@ export default function useApplicationData() {
         setState({...state, appointments}) 
       })
   }
+
+  // calulate spots available for each day
+  const updateSpots = function(dayName, days, appointments) {
+    const selectedDay = days.find(dayItem => dayItem.name === dayName);
+    const selectedDayAppointments = selectedDay.appointments;
   
-  useEffect(() => {
-    Promise.all([
-      axios.get('/api/days'),
-      axios.get('/api/appointments'),
-      axios.get('api/interviewers')
-    ])
-    .then(all => {
-      setState(prev => ({ 
-        ...prev, 
-        days: all[0].data, 
-        appointments: all[1].data ,
-        interviewers: all[2].data
-      }))
-    })
-  }, [])
+    let spots = 0;
+  
+    for (const appointmentId of selectedDayAppointments) {
+      const appointment = appointments[appointmentId];
+  
+      if (!appointment.interview) {
+        spots++;
+      }
+    }
+  
+    let updatedDay = {...selectedDay, spots};
+    
+    let updatedDays = [...days];
+    updatedDays[selectedDay] = updatedDay;
+    
+    return updatedDays;
+  };
 
   return (
     { state, setDay, bookInterview, cancelInterview }
