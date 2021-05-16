@@ -52,7 +52,6 @@ export default function useApplicationData() {
       day
     } 
   });
-  // const setDay = day => setState({ ...state, day });
 
   useEffect(() => {
     Promise.all([
@@ -69,12 +68,6 @@ export default function useApplicationData() {
           interviewers: all[2].data
         }
       })
-      // setState(prev => ({ 
-      //   ...prev, 
-      //   days: all[0].data, 
-      //   appointments: all[1].data ,
-      //   interviewers: all[2].data
-      // }))
     })
   }, [])
 
@@ -89,20 +82,18 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
-
     
     return axios.put(`/api/appointments/${id}`, appointment)
     .then(() => {
-        const updatedDays = updateSpots(state.day, state.days, appointments);
-        dispatch({
-          type: SET_INTERVIEW,
-          payload: {
-            id,
-            interview,
-            days: updatedDays
-          }
-        })
-        // setState({...state, appointments, days: updatedDays})
+      const updatedDays = updateSpots(state.day, state.days, appointments);
+      dispatch({
+        type: SET_INTERVIEW,
+        payload: {
+          id,
+          interview,
+          days: updatedDays
+        }
+      })
     })
   }
 
@@ -131,7 +122,6 @@ export default function useApplicationData() {
           days: updatedDays
         }
       })
-      // setState({...state, appointments, days: updatedDays}) 
     })
   }
 
