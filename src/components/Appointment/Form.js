@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import Button from "components/Button.js";
 import InterviewerList from "components/InterviewerList";
+import { cleanup } from "@testing-library/react/dist";
 
 export default function Form ({ name, interviewers, interviewer, onSave, onCancel }) {
   const [nameInputValue, setNameInputValue] = useState(name || "");
   const [selectedInterviewer, setSelectedInterviewer] = useState(interviewer || null);
+  const [error, setError] = useState("");
 
   const handleInputChange = (event) => {
     setNameInputValue(event.target.value)
@@ -23,6 +25,16 @@ export default function Form ({ name, interviewers, interviewer, onSave, onCance
   const save = () => {
     onSave(nameInputValue, selectedInterviewer);
   }
+
+  const validate = () => {
+    console.log("name: ", name);  
+    if (!name) {
+      setError("Student name cannot be blank")
+      return;
+    }
+
+    save(name, interviewer);
+  }
  
   return (
     <main className="appointment__card appointment__card--create">
@@ -35,7 +47,9 @@ export default function Form ({ name, interviewers, interviewer, onSave, onCance
             placeholder="Enter Student Name"
             value={nameInputValue}
             onChange={handleInputChange}
+            data-testid="student-name-input"
           />
+        <section className="appointment__validation">{error}</section>
         </form>
         <InterviewerList 
           interviewers={interviewers} 
@@ -53,7 +67,7 @@ export default function Form ({ name, interviewers, interviewer, onSave, onCance
           </Button>
           <Button 
             confirm
-            onClick={save}
+            onClick={validate}
           >
             Save
           </Button>
