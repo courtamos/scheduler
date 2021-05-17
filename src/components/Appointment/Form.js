@@ -27,13 +27,13 @@ export default function Form ({ name, interviewers, interviewer, onSave, onCance
   }
 
   const validate = () => {
-    console.log("name: ", name);  
-    if (!name) {
+    if (!nameInputValue) {
       setError("Student name cannot be blank")
       return;
     }
 
-    save(name, interviewer);
+    setError("");
+    save(nameInputValue, selectedInterviewer)
   }
  
   return (
