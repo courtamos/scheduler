@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Button from "components/Button.js";
 import InterviewerList from "components/InterviewerList";
-import { cleanup } from "@testing-library/react/dist";
 
 export default function Form ({ name, interviewers, interviewer, onSave, onCancel }) {
   const [nameInputValue, setNameInputValue] = useState(name || "");
