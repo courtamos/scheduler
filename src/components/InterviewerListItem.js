@@ -21,4 +21,4 @@ export default function InterviewerListItem({ name, avatar, selected, setIntervi
         {selected && name}
     </li>
   );
-}
+};

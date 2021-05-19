@@ -7,7 +7,7 @@ export default function Button({ confirm, danger, onClick, disabled, children })
    const buttonClass = classNames("button", {
       'button--confirm': confirm,
       'button--danger': danger
-   })
+   });
  
    return (
       <button 
@@ -18,4 +18,4 @@ export default function Button({ confirm, danger, onClick, disabled, children })
          {children}
       </button>
    );
- }
+ };

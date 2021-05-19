@@ -21,4 +21,4 @@ export default function Confirm ({ message, onConfirm, onCancel }) {
       </section>
     </main>
   );
-}
+};

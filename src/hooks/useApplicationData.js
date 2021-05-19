@@ -6,7 +6,7 @@ export default function useApplicationData() {
   const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
   const SET_INTERVIEW = "SET_INTERVIEW";
 
-  const reducer = function(state, action) {
+  const reducer = (state, action) => {
     switch (action.type) {
       case SET_DAY:
         return {
@@ -35,21 +35,21 @@ export default function useApplicationData() {
         throw new Error(
           `Tried to reduce with unsupported action type: ${action.type}`
         );
-    }
-  }
+    };
+  };
 
   const [state, dispatch] = useReducer(reducer, {
     day: "Monday",
     days: [],
     appointments: {},
     interviewers: {}
-  })
+  });
 
   const setDay = day => dispatch({
     type: SET_DAY,
     payload: {
       day
-    } 
+    }
   });
 
   useEffect(() => {
@@ -68,10 +68,10 @@ export default function useApplicationData() {
         }
       })
     })
-  }, [])
+  }, []);
 
-  // create an interview
-  const bookInterview = function(id, interview) {
+  // bookInterview Function - creates a new interview //
+  const bookInterview = (id, interview) => {
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -93,11 +93,11 @@ export default function useApplicationData() {
           days: updatedDays
         }
       })
-    })
-  }
+    });
+  };
 
-  // delete an interview
-  const cancelInterview = function(id) {
+  // cancelInterview Function - deletes an interview //
+  const cancelInterview = (id) => {
     const appointment = {
       ...state.appointments[id],
       interview: null
@@ -107,7 +107,6 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
-
     
     return axios.delete(`/api/appointments/${id}`)
     .then(() => {
@@ -121,8 +120,8 @@ export default function useApplicationData() {
           days: updatedDays
         }
       })
-    })
-  }
+    });
+  };
 
   // calculate spots available for each day
   const updateSpots = function(dayName, days, appointments) {
@@ -136,26 +135,23 @@ export default function useApplicationData() {
       if (!appointment.interview) {
         spots++;
       }
-    }
+    };
   
     let updatedDay = {...selectedDay, spots};
-    
     const updatedDays = days.map(day => {
       if (day.name === dayName) {
         return updatedDay;
-      }
-
-      return day
-    })
-    
+      };
+      return day;
+    });
+  
     return updatedDays;
   };
 
   return (
     { state, setDay, bookInterview, cancelInterview, dispatch }
-  )
-
-}
+  );
+};
 
 
 

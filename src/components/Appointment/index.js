@@ -1,5 +1,4 @@
 import React from "react";
-
 import "components/Appointment/styles.scss";
 import Header from "components/Appointment/Header";
 import Show from "components/Appointment/Show";
@@ -25,34 +24,34 @@ export default function Appointment ({ id, time, interview, student, interviewer
     interview ? SHOW : EMPTY
   );
 
-  // save an appointment
-  const save = function(name, interviewer) {
+  // Save Function - saves interview && transitions to correct view pending promise //
+  const save = (name, interviewer) => {
     const interview = {
       student: name,
       interviewer
     };
 
-    transition(SAVING)
+    transition(SAVING);
 
     bookInterview(id, interview)
     .then(() => {
-      transition(SHOW)
+      transition(SHOW);
     })
     .catch((error) => {
-      transition(ERROR_SAVE, true)
+      transition(ERROR_SAVE, true);
     })
   }
 
-  // delete an appointment
-  const cancel = function() {
-    transition(DELETING, true)
+  // Delete Function - deletes interview && transitions to correct view pending promise //
+  const cancel = () => {
+    transition(DELETING, true);
 
     cancelInterview(id)
     .then(() => {
-      transition(EMPTY)
+      transition(EMPTY);
     })
     .catch((error) => {
-      transition(ERROR_DELETE, true)
+      transition(ERROR_DELETE, true);
     })
   }
 
@@ -123,4 +122,4 @@ export default function Appointment ({ id, time, interview, student, interviewer
         )}
     </article>
   );
-}
+};

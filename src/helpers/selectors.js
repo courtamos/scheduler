@@ -1,3 +1,4 @@
+// getAppointmentsForDay Function - returns all apointments for a given day //
 export function getAppointmentsForDay (state, day) {
   const daysArray = state.days;
 
@@ -5,7 +6,7 @@ export function getAppointmentsForDay (state, day) {
   
   if (!dayFound) {
     return [];
-  }
+  };
 
   const appointmentsForDay = [];
 
@@ -14,13 +15,13 @@ export function getAppointmentsForDay (state, day) {
 
     if (matchedAppointment) {
       appointmentsForDay.push(matchedAppointment);
-    }
-  }
+    };
+  };
 
   return appointmentsForDay;
-}
+};
 
-
+// getInterviewersForDay Function - returns all interviewers for a given day //
 export function getInterviewersForDay (state, day) {
   const daysArray = state.days;
 
@@ -28,7 +29,7 @@ export function getInterviewersForDay (state, day) {
   
   if (!dayFound) {
     return [];
-  }
+  };
 
   const interviewersForDay = [];
 
@@ -37,22 +38,23 @@ export function getInterviewersForDay (state, day) {
 
     if (matchedInterviewers) {
       interviewersForDay.push(matchedInterviewers);
-    }
-  }
+    };
+  };
 
   return interviewersForDay;
-}
+};
 
+// getInterview Function - returns a specific interview //
 export function getInterview (state, interview) {
   if (interview === null) {
     return null;
-  }
+  };
 
   for (const interviewer in state.interviewers) {
     if (parseInt(interviewer) === interview.interviewer) {
       return {...interview, interviewer: state.interviewers[interviewer]};
-    }
-  }
+    };
+  };
 
   return null;
-}
+};

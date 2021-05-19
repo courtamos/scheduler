@@ -13,4 +13,4 @@ export default function DayList({ days, day, setDay }) {
       />
     ))}</ul>
   );
-}
+};

@@ -1,5 +1,4 @@
 import React from "react";
-
 import "components/Application.scss";
 import DayList from "components/DayList";
 import Appointment from "components/Appointment/index"
@@ -46,18 +45,8 @@ export default function Application() {
             /> 
           )
         })}
-
-        {/* {dailyAppointments.map(appointmentItem => (
-          <Appointment 
-            key={appointmentItem.id}
-            id={appointmentItem.id}
-            time={appointmentItem.time}
-            interview={appointmentItem.interview}
-            interviewers={dailyInterviewers}
-          />
-        ))} */}
         <Appointment key="last" time="5pm" />
       </section>
     </main>
   );
-}
+};

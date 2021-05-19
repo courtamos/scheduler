@@ -7,24 +7,29 @@ export default function Form ({ name, interviewers, interviewer, onSave, onCance
   const [selectedInterviewer, setSelectedInterviewer] = useState(interviewer || null);
   const [error, setError] = useState("");
 
+  // Input Change Handler Function - updates state of nameInputValue //
   const handleInputChange = (event) => {
     setNameInputValue(event.target.value)
   };
 
+  // Reset Function - updates state of nameInputValue && selectedInterviewer to default //
   const reset = () => {
     setNameInputValue("");
     setSelectedInterviewer(null);
   }
 
+  // Cancel Function - calls reset function && handles the onCancel //
   const cancel = () => {
     reset();
     onCancel();
   }
 
+  // Save Function - updates state of nameInputValue && selectedInterviewer //
   const save = () => {
     onSave(nameInputValue, selectedInterviewer);
   }
 
+  // Validate Function - validates form input && sets error || calls save function //
   const validate = () => {
     if (!nameInputValue) {
       setError("Student name cannot be blank")
@@ -73,6 +78,5 @@ export default function Form ({ name, interviewers, interviewer, onSave, onCance
         </section>
       </section>
     </main>
-
   );
 }
